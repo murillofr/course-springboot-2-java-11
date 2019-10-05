@@ -90,5 +90,12 @@ public class ProductService {
 			setProductCategories(entity, dto.getCategories());
 		}
 	}
+
+	@Transactional
+	public Page<ProductDTO> findByCategoryPaged(Long categoryId, Pageable pageable) {
+		Category category = categoryRepository.getOne(categoryId);
+		Page<Product> products = productRepository.findByCategory(category, pageable);
+		return products.map(e -> new ProductDTO(e));
+	}
 	
 }
